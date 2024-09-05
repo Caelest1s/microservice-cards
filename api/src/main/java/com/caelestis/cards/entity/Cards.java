@@ -20,9 +20,9 @@ public class Cards extends BaseEntity {
 
     private String cardType;
 
-    private Integer totalLimit;
+    private int totalLimit;
 
-    private Integer amountUsed;
+    private int amountUsed;
 
-    private Integer availableAmount;
+    private int availableAmount;
 }
