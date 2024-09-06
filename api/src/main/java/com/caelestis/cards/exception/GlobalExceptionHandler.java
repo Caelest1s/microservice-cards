@@ -12,6 +12,19 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler extends RuntimeException {
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDto> handlerGlobalException(
+        Exception exception, WebRequest webRequest){
+
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponseDto);
+    }
+
     @ExceptionHandler(CardAlreadyExistsException.class)
     public ResponseEntity<ErrorResponseDto> handlerCardAlreadyExistsException(
             CardAlreadyExistsException exception, WebRequest webRequest) {
@@ -23,5 +36,18 @@ public class GlobalExceptionHandler extends RuntimeException {
                 LocalDateTime.now()
         );
         return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handlerResourceNotFoundException(
+            ResourceNotFoundException exception, WebRequest webRequest){
+
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(
+                webRequest.getDescription(false),
+                HttpStatus.NOT_FOUND,
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
     }
 }
