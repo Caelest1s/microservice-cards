@@ -46,8 +46,6 @@ public class CardsServiceImpl implements ICardsService {
         entity.setTotalLimit(CardsConstants.NEW_CARD_LIMIT);
         entity.setAmountUsed(0);
         entity.setAvailableAmount(CardsConstants.NEW_CARD_LIMIT);
-        entity.setCreatedAt(LocalDateTime.now());
-        entity.setCreatedBy("Cards Microservice");
         return entity;
     }
 
