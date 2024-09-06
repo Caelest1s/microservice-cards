@@ -54,4 +54,13 @@ public class CardsServiceImpl implements ICardsService {
     private String createCardNumber(){
         return Long.toString(100000000000L + new Random().nextInt(900000000));
     }
+
+    @Override
+    public boolean updateCard(CardsDto cardsDto) {
+        Cards cards = cardsRepository.findByCardNumber(cardsDto.getCardNumber()).orElseThrow(
+                () -> new ResourceNotFoundException("Card", "CardNumber", cardsDto.getCardNumber()));
+        CardsMapper.mapToCards(cardsDto, cards);
+        cardsRepository.save(cards);
+        return true;
+    }
 }
