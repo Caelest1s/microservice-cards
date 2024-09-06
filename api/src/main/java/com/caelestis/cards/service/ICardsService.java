@@ -10,4 +10,6 @@ public interface ICardsService {
     CardsDto fetchCard(String numberMobile);
 
     boolean updateCard(CardsDto cardsDto);
+
+    boolean deleteCard(String numberMobile);
 }
