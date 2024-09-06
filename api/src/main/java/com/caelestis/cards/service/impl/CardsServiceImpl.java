@@ -1,8 +1,11 @@
 package com.caelestis.cards.service.impl;
 
 import com.caelestis.cards.constants.CardsConstants;
+import com.caelestis.cards.dto.CardsDto;
 import com.caelestis.cards.entity.Cards;
 import com.caelestis.cards.exception.CardAlreadyExistsException;
+import com.caelestis.cards.exception.ResourceNotFoundException;
+import com.caelestis.cards.mapper.CardsMapper;
 import com.caelestis.cards.repository.CardsRepository;
 import com.caelestis.cards.service.ICardsService;
 import lombok.AllArgsConstructor;
@@ -25,6 +28,14 @@ public class CardsServiceImpl implements ICardsService {
             throw new CardAlreadyExistsException("Card already registered with given mobileNumber: " + numberMobile);
         }
         cardsRepository.save(createNewCards(numberMobile));
+    }
+
+    @Override
+    public CardsDto fetchCard(String numberMobile) {
+        Cards cards = cardsRepository.findByMobileNumber(numberMobile).orElseThrow(
+                () -> new ResourceNotFoundException("Card", "mobileNumber", numberMobile));
+
+        return CardsMapper.mapToCardsDto(cards, new CardsDto());
     }
 
     private Cards createNewCards(String mobileNumber) {
