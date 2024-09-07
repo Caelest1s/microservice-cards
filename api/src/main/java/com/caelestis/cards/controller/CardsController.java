@@ -2,20 +2,49 @@ package com.caelestis.cards.controller;
 
 import com.caelestis.cards.constants.CardsConstants;
 import com.caelestis.cards.dto.CardsDto;
+import com.caelestis.cards.dto.ErrorResponseDto;
 import com.caelestis.cards.dto.ResponseDto;
 import com.caelestis.cards.service.ICardsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(
+        name = "CRUD REST APIs for Cards in Bank",
+        description = "CRUD REST APIs in Bank to CREATE, UPDATE, FETCH AND DELETE card details"
+)
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
 public class CardsController {
 
     ICardsService iCardsService;
+
+    @Operation(
+            summary = "Create Card REST API",
+            description = "REST API to create new Card inside Bank")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "HTTP Status CREATED"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    }
+    )
 
     @PostMapping(value = "/create")
     public ResponseEntity<ResponseDto> createCard(@RequestParam String mobileNumber){
@@ -24,12 +53,50 @@ public class CardsController {
                 .body(new ResponseDto(CardsConstants.STATUS_201, CardsConstants.MESSAGE_201));
     }
 
+    @Operation(
+            summary = "Fetch Card Details REST API",
+            description = "REST API to fetch card details based on a mobile number"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
     @GetMapping(value = "/fetch")
     public ResponseEntity<CardsDto> fetchCard(@RequestParam String mobileNumber){
         CardsDto cardsDto = iCardsService.fetchCard(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(cardsDto);
     }
 
+    @Operation(
+            summary = "Update Card Details REST API",
+            description = "REST API to update card details based on a card number"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "417",
+                    description = "Expectation Failed"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
     @PutMapping(value = "/update")
     public ResponseEntity<ResponseDto> updateCard(@RequestBody CardsDto cardsDto){
         boolean isUpdated = iCardsService.updateCard(cardsDto);
@@ -42,6 +109,27 @@ public class CardsController {
         }
     }
 
+    @Operation(
+            summary = "Delete Card Details REST API",
+            description = "REST API to delete Card details based on a mobile number"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP Status OK"
+            ),
+            @ApiResponse(
+                    responseCode = "417",
+                    description = "Expectation Failed"
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "HTTP Status Internal Server Error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
     @DeleteMapping(value = "/delete")
     public ResponseEntity<ResponseDto> deleteCard(@RequestParam String mobileNumber){
         boolean isDeleted = iCardsService.deleteCard(mobileNumber);
