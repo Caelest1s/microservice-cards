@@ -11,10 +11,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
+@Validated
 public class CardsController {
 
     ICardsService iCardsService;
@@ -47,7 +51,12 @@ public class CardsController {
     )
 
     @PostMapping(value = "/create")
-    public ResponseEntity<ResponseDto> createCard(@RequestParam String mobileNumber){
+    public ResponseEntity<ResponseDto> createCard(
+            @RequestParam
+            @Valid
+            @Pattern (regexp = CardsConstants.VALID_MOBILE_NUMBER, message = CardsConstants.ERR_MESSAGE_MOBILE)
+            String mobileNumber){
+
         iCardsService.createCard(mobileNumber);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDto(CardsConstants.STATUS_201, CardsConstants.MESSAGE_201));
@@ -71,7 +80,12 @@ public class CardsController {
             )
     })
     @GetMapping(value = "/fetch")
-    public ResponseEntity<CardsDto> fetchCard(@RequestParam String mobileNumber){
+    public ResponseEntity<CardsDto> fetchCard(
+            @RequestParam
+            @Valid
+            @Pattern(regexp = CardsConstants.VALID_MOBILE_NUMBER, message = CardsConstants.ERR_MESSAGE_MOBILE)
+            String mobileNumber){
+
         CardsDto cardsDto = iCardsService.fetchCard(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(cardsDto);
     }
@@ -98,7 +112,7 @@ public class CardsController {
             )
     })
     @PutMapping(value = "/update")
-    public ResponseEntity<ResponseDto> updateCard(@RequestBody CardsDto cardsDto){
+    public ResponseEntity<ResponseDto> updateCard(@Valid @RequestBody CardsDto cardsDto){
         boolean isUpdated = iCardsService.updateCard(cardsDto);
         if (isUpdated) {
             return ResponseEntity.status(HttpStatus.OK)
@@ -131,7 +145,12 @@ public class CardsController {
             )
     })
     @DeleteMapping(value = "/delete")
-    public ResponseEntity<ResponseDto> deleteCard(@RequestParam String mobileNumber){
+    public ResponseEntity<ResponseDto> deleteCard(
+            @RequestParam
+            @Valid
+            @Pattern(regexp = CardsConstants.VALID_MOBILE_NUMBER, message = CardsConstants.ERR_MESSAGE_MOBILE)
+            String mobileNumber){
+
         boolean isDeleted = iCardsService.deleteCard(mobileNumber);
         if (isDeleted) {
             return ResponseEntity.status(HttpStatus.OK)
