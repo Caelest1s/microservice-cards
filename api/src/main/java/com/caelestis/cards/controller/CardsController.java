@@ -82,7 +82,6 @@ public class CardsController {
     @GetMapping(value = "/fetch")
     public ResponseEntity<CardsDto> fetchCard(
             @RequestParam
-            @Valid
             @Pattern(regexp = CardsConstants.VALID_MOBILE_NUMBER, message = CardsConstants.ERR_MESSAGE_MOBILE)
             String mobileNumber){
 
@@ -147,7 +146,6 @@ public class CardsController {
     @DeleteMapping(value = "/delete")
     public ResponseEntity<ResponseDto> deleteCard(
             @RequestParam
-            @Valid
             @Pattern(regexp = CardsConstants.VALID_MOBILE_NUMBER, message = CardsConstants.ERR_MESSAGE_MOBILE)
             String mobileNumber){
 

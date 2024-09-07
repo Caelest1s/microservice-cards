@@ -1,7 +1,6 @@
 package com.caelestis.cards.service;
 
 import com.caelestis.cards.dto.CardsDto;
-import com.caelestis.cards.entity.Cards;
 
 public interface ICardsService {
 
