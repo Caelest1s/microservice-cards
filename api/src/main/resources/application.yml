@@ -1,5 +1,6 @@
 server:
   port: 9000
+
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
@@ -14,6 +15,13 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  config:
+    import:
+      - "application_qa.yml"
+      - "application_prod.yml"
+  profiles:
+    active:
+      - "default"
 
 build:
   version: "3.0"
