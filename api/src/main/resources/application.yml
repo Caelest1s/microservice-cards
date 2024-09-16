@@ -17,3 +17,12 @@ spring:
 
 build:
   version: "3.0"
+
+cards:
+  message: "Welcome to Bank card related local APIs"
+  contactDetails:
+    name: "Fabio Lima - Developer"
+    email: "contato@fabiolima.dev.br"
+  onCallSupport:
+    - (+55) 031 99524-1111
+    - (+55) 031 3030-1234
