@@ -34,6 +34,10 @@ public class CardsController {
 
     private final ICardsService iCardsService;
 
+    public CardsController(ICardsService iCardsService){
+        this.iCardsService = iCardsService;
+    }
+
     @Value("${build.version}")
     private String buildVersion;
 
@@ -42,10 +46,6 @@ public class CardsController {
 
     @Autowired
     private CardsContactInfoDto cardsContactInfoDto;
-
-    public CardsController(ICardsService iCardsService){
-        this.iCardsService = iCardsService;
-    }
 
     @Operation(
             summary = "Create Card REST API",
