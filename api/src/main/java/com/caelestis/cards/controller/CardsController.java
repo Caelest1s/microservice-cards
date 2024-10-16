@@ -93,7 +93,7 @@ public class CardsController {
             )
     })
     @GetMapping(value = "/fetch")
-    public ResponseEntity<CardsDto> fetchCard(
+    public ResponseEntity<CardsDto> fetchCardDetails(
             @RequestParam
             @Pattern(regexp = CardsConstants.VALID_MOBILE_NUMBER, message = CardsConstants.ERR_MESSAGE_MOBILE)
             String mobileNumber){
